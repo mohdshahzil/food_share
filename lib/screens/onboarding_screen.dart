@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_share/screens/role_selection_screen.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -71,13 +72,20 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           );
                         } else {
                           // Navigate to role selection or next screen
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const RoleSelectionScreen()),
+                          );
                         }
                       },
                       style: ElevatedButton.styleFrom(
                         shape: const CircleBorder(),
                         backgroundColor: Colors.black,
                       ),
-                      child: const Icon(Icons.arrow_forward_ios, color: Colors.white),
+                      child: const Icon(Icons.arrow_forward_ios,
+                          color: Colors.white),
                     ),
                   ),
                 ],
@@ -106,17 +114,34 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
 class Onboard {
   final String image, title, description;
-  Onboard({required this.image, required this.title, required this.description});
+  Onboard(
+      {required this.image, required this.title, required this.description});
 }
 
 final List<Onboard> demoData = [
-  Onboard(image: "assets/sharingfood.png", title: "Share Surplus, Reduce Waste", description: "Help distribute excess food to those in need and minimize waste."),
-  Onboard(image: "assets/helpfood.png", title: "Help Those in Need", description: "Make a difference by connecting surplus food with hungry people."),
-  Onboard(image: "assets/community.png", title: "Join the Food Sharing Community", description: "Be part of a movement to end hunger and food wastage together."),
+  Onboard(
+      image: "assets/sharingfood.png",
+      title: "Share Surplus, Reduce Waste",
+      description:
+          "Help distribute excess food to those in need and minimize waste."),
+  Onboard(
+      image: "assets/helpfood.png",
+      title: "Help Those in Need",
+      description:
+          "Make a difference by connecting surplus food with hungry people."),
+  Onboard(
+      image: "assets/community.png",
+      title: "Join the Food Sharing Community",
+      description:
+          "Be part of a movement to end hunger and food wastage together."),
 ];
 
 class OnboardContent extends StatelessWidget {
-  const OnboardContent({super.key, required this.image, required this.title, required this.description});
+  const OnboardContent(
+      {super.key,
+      required this.image,
+      required this.title,
+      required this.description});
 
   final String image, title, description;
 
