@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_share/screens/auth/food_donor_signup_screen.dart';
+import 'package:food_share/screens/auth/food_receiver_signup_screen.dart';
 
 class RoleSelectionScreen extends StatelessWidget {
   const RoleSelectionScreen({super.key});
@@ -66,6 +67,12 @@ class RoleSelectionScreen extends StatelessWidget {
             MaterialPageRoute(
                 builder: (context) => const FoodDonorSignUpScreen()),
           );
+        } else if (title == "Food Receiver") {
+          // Navigate to Food Receiver Sign-up screen
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => FoodReceiverSignUpScreen()),
+          );
         }
       },
       child: AnimatedContainer(
@@ -126,3 +133,4 @@ class RoleSelectionScreen extends StatelessWidget {
     );
   }
 }
+
