@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_share/screens/auth/food_donor_signup_screen.dart';
 
 class RoleSelectionScreen extends StatelessWidget {
   const RoleSelectionScreen({super.key});
@@ -50,7 +51,8 @@ class RoleSelectionScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildRoleCard(BuildContext context, {
+  Widget _buildRoleCard(
+    BuildContext context, {
     required IconData icon,
     required String title,
     required String description,
@@ -58,6 +60,13 @@ class RoleSelectionScreen extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         // Navigate to the respective screen based on selection
+        if (title == "Food Donor") {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const FoodDonorSignUpScreen()),
+          );
+        }
       },
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
@@ -117,4 +126,3 @@ class RoleSelectionScreen extends StatelessWidget {
     );
   }
 }
-
