@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'food_donor_signup_screen.dart';
 import 'package:food_share/widgets/custom_text_field.dart';
 import 'package:food_share/widgets/custom_password_field.dart';
+import 'package:food_share/services/auth_service.dart';
 
 class FoodDonorSignInScreen extends StatefulWidget {
   const FoodDonorSignInScreen({super.key});
@@ -17,12 +18,43 @@ class _FoodDonorSignInScreenState extends State<FoodDonorSignInScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  void _submitForm() {
+  final AuthService _authService = AuthService();
+
+  void _submitForm() async {
     if (_formKey.currentState!.validate()) {
-      // TODO: Implement sign in logic
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Sign-in Successful!")),
-      );
+      try {
+        await _authService.signInWithEmailAndPassword(
+          emailController.text.trim(),
+          passwordController.text,
+        );
+
+        // Get current user and check role
+        final user = _authService.getCurrentUser();
+        if (user != null) {
+          final role = await _authService.getUserRole(user.uid);
+          if (role == 'Food Donor') {
+            // Navigate to donor home screen
+            // TODO: Replace with your donor home screen
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text("Successfully signed in as donor")),
+            );
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text("This account is not registered as a donor"),
+                backgroundColor: Colors.red,
+              ),
+            );
+          }
+        }
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(e.toString()),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 
@@ -88,9 +120,9 @@ class _FoodDonorSignInScreenState extends State<FoodDonorSignInScreen> {
                   ],
                 ),
               ),
-              
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(20),
@@ -140,7 +172,6 @@ class _FoodDonorSignInScreenState extends State<FoodDonorSignInScreen> {
                   ],
                 ),
               ),
-              
               const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

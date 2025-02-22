@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_share/services/auth_service.dart';
 
 class FoodDonorSignUpScreen extends StatefulWidget {
   const FoodDonorSignUpScreen({super.key});
@@ -9,23 +10,71 @@ class FoodDonorSignUpScreen extends StatefulWidget {
 
 class _FoodDonorSignUpScreenState extends State<FoodDonorSignUpScreen> {
   final _formKey = GlobalKey<FormState>();
+  final AuthService _authService = AuthService();
 
-  TextEditingController nameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController phoneController = TextEditingController();
-  TextEditingController addressController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController addressController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController = TextEditingController();
 
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
 
-  void _submitForm() {
+  void _submitForm() async {
     if (_formKey.currentState!.validate()) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Sign-up Successful!")),
-      );
+      try {
+        print('Attempting to sign up with:');
+        print('Email: ${emailController.text}');
+        print('Name: ${nameController.text}');
+        print('Phone: ${phoneController.text}');
+        print('Address: ${addressController.text}');
+
+        await _authService.signUpWithEmailAndPassword(
+          email: emailController.text.trim(),
+          password: passwordController.text,
+          name: nameController.text.trim(),
+          phone: phoneController.text.trim(),
+          address: addressController.text.trim(),
+          role: 'Food Donor',
+        );
+
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("Successfully signed up as donor"),
+              backgroundColor: Colors.green,
+            ),
+          );
+
+          // Navigate back to sign in screen
+          Navigator.pop(context);
+        }
+      } catch (e) {
+        print('Error during signup: $e');
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(e.toString()),
+              backgroundColor: Colors.red,
+              duration: const Duration(seconds: 5),
+            ),
+          );
+        }
+      }
     }
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    emailController.dispose();
+    phoneController.dispose();
+    addressController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    super.dispose();
   }
 
   @override
@@ -201,5 +250,4 @@ class _FoodDonorSignUpScreenState extends State<FoodDonorSignUpScreen> {
     );
   }
 }
-
  

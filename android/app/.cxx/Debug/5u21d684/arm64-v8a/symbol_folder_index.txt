@@ -1,0 +1,1 @@
+C:\MySpace\Projects\flutter_projects\food_share\build\app\intermediates\cxx\Debug\5u21d684\obj\arm64-v8a
